@@ -1,5 +1,5 @@
 variable "queue" {
-  description = "Application queue name (e.g. dev-myapp); unique across your infra"
+  description = "Queue name (e.g. dev-myapp-low-priority); unique across your infra"
 }
 
 variable "labels" {
@@ -9,12 +9,10 @@ variable "labels" {
 
 variable "alerting" {
   description = "Should Stackdriver alerts be generated?"
-  default     = "false"
 }
 
 variable "enable_firehose_all_messages" {
   description = "Should all messages published to this topic be firehosed into Cloud Storage"
-  default     = "false"
 }
 
 variable "dataflow_tmp_gcs_location" {
@@ -22,13 +20,11 @@ variable "dataflow_tmp_gcs_location" {
 }
 
 variable "dataflow_template_gcs_path" {
-  description = "The template path for Google Dataflow for PubSub to Storage, e.g. gs://dataflow-templates/2019-04-24-00/Cloud_PubSub_to_GCS_Text"
-  default     = "gs://dataflow-templates/2019-04-24-00/Cloud_PubSub_to_GCS_Text"
+  description = "The template path for Google Dataflow, e.g. gs://dataflow-templates/2019-04-24-00/Cloud_PubSub_to_GCS_Text"
 }
 
 variable "dataflow_zone" {
   description = "The zone to use for Dataflow. This may be required if it's not set at the provider level, or that zone doesn't support Dataflow"
-  default     = ""
 }
 
 variable "dataflow_output_directory" {
@@ -37,37 +33,18 @@ variable "dataflow_output_directory" {
 
 variable "dataflow_output_filename_prefix" {
   description = "Filename prefix for output files by Google Dataflow (defaults to subscription name)"
-  default     = ""
 }
 
 variable "queue_alarm_high_message_count_threshold" {
   description = "Threshold for alerting on high message count in main queue"
-  default     = 5000
-}
-
-variable "queue_alarm_high_priority_high_message_count_threshold" {
-  description = "Threshold for alerting on high message count in high priority queue"
-  default     = 5000
-}
-
-variable "queue_alarm_low_priority_high_message_count_threshold" {
-  description = "Threshold for alerting on high message count in low priority queue"
-  default     = 5000
-}
-
-variable "queue_alarm_bulk_high_message_count_threshold" {
-  description = "Threshold for alerting on high message count in bulk queue"
-  default     = 5000
 }
 
 variable "queue_high_message_count_notification_channels" {
   description = "Stackdriver Notification Channels for main queue alarm for high message count (required if alerting is on)"
   type        = "list"
-  default     = []
 }
 
 variable "dlq_high_message_count_notification_channels" {
   description = "Stackdriver Notification Channels for DLQ alarm for high message count (required if alerting is on)"
   type        = "list"
-  default     = []
 }
