@@ -22,7 +22,8 @@ module "taskhawk-dev-myapp" {
 }
 ```
 
-It's recommended that `queue` include your environment. 
+If using a single Google project for multiple environments (e.g. dev/staging/prod), ensure that `queue` includes
+your environment name.
 
 Naming convention - lowercase alphanumeric and dashes only.
 
@@ -34,9 +35,31 @@ The Google topic and subscription names will be prefixed by `taskhawk-`.
 
 ## Caveats
 
-Google limits the [lifecycle](https://cloud.google.com/pubsub/docs/subscriber#lifecycle) of a subscription. By default, if a subscription
-has not received any messages in 31 days, it'll be deleted. Terraform currently [does not support](https://github.com/terraform-providers/terraform-provider-google/issues/2507)
-overriding this behavior. 
+### IAM
+
+If you're using Terraform to create the Dataflow output GCS bucket, then ensure that permissions for the bucket
+include `Storage Legacy Object Owner` or `Storage Object Admin`. This is done by default if using
+Google Console, but not for Terraform. This can be done in Terraform like so:
+
+```hcl
+data google_project current {}
+
+resource "google_storage_bucket_iam_member" "taskhawk_firehose_editor_iam" {
+  bucket = "${google_storage_bucket.taskhawk_firehose.name}"
+  role   = "roles/storage.admin"
+  member = "projectEditor:${data.google_project.current.id}"
+}
+
+resource "google_storage_bucket_iam_member" "taskhawk_firehose_owner_iam" {
+  bucket = "${google_storage_bucket.taskhawk_firehose.name}"
+  role   = "roles/storage.admin"
+  member = "projectOwner:${data.google_project.current.id}"
+}
+```
+
+Alternatively, you can restrict these permissions to the user Dataflow uses, which is: `{project number}-compute@developer.gserviceaccount.com`.
+
+The Pub/Sub topic name will be prefixed by `taskhawk-`.
 
 ## Release Notes
 

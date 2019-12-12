@@ -6,6 +6,7 @@ module "queue_default" {
   alerting = "${var.alerting}"
   labels   = "${var.labels}"
 
+  alerting_project                               = "${var.alerting_project}"
   queue_alarm_high_message_count_threshold       = "${var.queue_alarm_high_message_count_threshold}"
   queue_high_message_count_notification_channels = "${var.queue_high_message_count_notification_channels}"
   dlq_high_message_count_notification_channels   = "${var.dlq_high_message_count_notification_channels}"
@@ -14,6 +15,7 @@ module "queue_default" {
   dataflow_tmp_gcs_location       = "${var.dataflow_tmp_gcs_location}"
   dataflow_template_gcs_path      = "${var.dataflow_template_gcs_path}"
   dataflow_zone                   = "${var.dataflow_zone}"
+  dataflow_region                 = "${var.dataflow_region}"
   dataflow_output_directory       = "${var.dataflow_output_directory}"
   dataflow_output_filename_prefix = "${var.dataflow_output_filename_prefix}"
 }
@@ -26,6 +28,7 @@ module "queue_high_priority" {
   alerting = "${var.alerting}"
   labels   = "${var.labels}"
 
+  alerting_project                               = "${var.alerting_project}"
   queue_alarm_high_message_count_threshold       = "${var.queue_alarm_high_priority_high_message_count_threshold}"
   queue_high_message_count_notification_channels = "${var.queue_high_message_count_notification_channels}"
   dlq_high_message_count_notification_channels   = "${var.dlq_high_message_count_notification_channels}"
@@ -34,6 +37,7 @@ module "queue_high_priority" {
   dataflow_tmp_gcs_location       = "${var.dataflow_tmp_gcs_location}"
   dataflow_template_gcs_path      = "${var.dataflow_template_gcs_path}"
   dataflow_zone                   = "${var.dataflow_zone}"
+  dataflow_region                 = "${var.dataflow_region}"
   dataflow_output_directory       = "${var.dataflow_output_directory}"
   dataflow_output_filename_prefix = "${var.dataflow_output_filename_prefix}"
 }
@@ -46,6 +50,7 @@ module "queue_low_priority" {
   alerting = "${var.alerting}"
   labels   = "${var.labels}"
 
+  alerting_project                               = "${var.alerting_project}"
   queue_alarm_high_message_count_threshold       = "${var.queue_alarm_low_priority_high_message_count_threshold}"
   queue_high_message_count_notification_channels = "${var.queue_high_message_count_notification_channels}"
   dlq_high_message_count_notification_channels   = "${var.dlq_high_message_count_notification_channels}"
@@ -54,6 +59,7 @@ module "queue_low_priority" {
   dataflow_tmp_gcs_location       = "${var.dataflow_tmp_gcs_location}"
   dataflow_template_gcs_path      = "${var.dataflow_template_gcs_path}"
   dataflow_zone                   = "${var.dataflow_zone}"
+  dataflow_region                 = "${var.dataflow_region}"
   dataflow_output_directory       = "${var.dataflow_output_directory}"
   dataflow_output_filename_prefix = "${var.dataflow_output_filename_prefix}"
 }
@@ -66,6 +72,7 @@ module "queue_bulk" {
   alerting = "${var.alerting}"
   labels   = "${var.labels}"
 
+  alerting_project                               = "${var.alerting_project}"
   queue_alarm_high_message_count_threshold       = "${var.queue_alarm_bulk_high_message_count_threshold}"
   queue_high_message_count_notification_channels = "${var.queue_high_message_count_notification_channels}"
   dlq_high_message_count_notification_channels   = "${var.dlq_high_message_count_notification_channels}"
@@ -74,6 +81,7 @@ module "queue_bulk" {
   dataflow_tmp_gcs_location       = "${var.dataflow_tmp_gcs_location}"
   dataflow_template_gcs_path      = "${var.dataflow_template_gcs_path}"
   dataflow_zone                   = "${var.dataflow_zone}"
+  dataflow_region                 = "${var.dataflow_region}"
   dataflow_output_directory       = "${var.dataflow_output_directory}"
   dataflow_output_filename_prefix = "${var.dataflow_output_filename_prefix}"
 }
