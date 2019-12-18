@@ -14,7 +14,9 @@ resource "google_pubsub_subscription" "subscription" {
 
   labels = "${var.labels}"
 
-  expiration_policy {}
+  expiration_policy {
+    ttl = ""
+  }
 }
 
 resource "google_pubsub_topic" "dlq_topic" {
@@ -31,7 +33,9 @@ resource "google_pubsub_subscription" "dlq_subscription" {
 
   labels = "${var.labels}"
 
-  expiration_policy {}
+  expiration_policy {
+    ttl = ""
+  }
 }
 
 resource "google_monitoring_alert_policy" "high_message_alert" {
