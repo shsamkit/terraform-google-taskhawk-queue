@@ -50,11 +50,11 @@ data "google_iam_policy" "subscription_policy" {
   }
 }
 
-resource "google_pubsub_topic_iam_policy" "subscription_policy" {
+resource "google_pubsub_subscription_iam_policy" "subscription_policy" {
   count = "${var.iam_service_account == "" ? 0 : 1}"
 
-  policy_data = "${data.google_iam_policy.subscription_policy.policy_data}"
-  topic       = "${google_pubsub_subscription.subscription.name}"
+  policy_data  = "${data.google_iam_policy.subscription_policy.policy_data}"
+  subscription = "${google_pubsub_subscription.subscription.name}"
 }
 
 resource "google_pubsub_topic" "dlq_topic" {
@@ -107,11 +107,11 @@ data "google_iam_policy" "dlq_subscription_policy" {
   }
 }
 
-resource "google_pubsub_topic_iam_policy" "dlq_subscription_policy" {
+resource "google_pubsub_subscription_iam_policy" "dlq_subscription_policy" {
   count = "${var.iam_service_account == "" ? 0 : 1}"
 
-  policy_data = "${data.google_iam_policy.dlq_subscription_policy.policy_data}"
-  topic       = "${google_pubsub_subscription.dlq_subscription.name}"
+  policy_data  = "${data.google_iam_policy.dlq_subscription_policy.policy_data}"
+  subscription = "${google_pubsub_subscription.dlq_subscription.name}"
 }
 
 resource "google_monitoring_alert_policy" "high_message_alert" {
