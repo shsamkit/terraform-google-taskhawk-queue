@@ -6,6 +6,25 @@ resource "google_pubsub_topic" "topic" {
   labels = "${var.labels}"
 }
 
+data "google_iam_policy" "topic_policy" {
+  binding {
+    members = ["serviceAccount:${var.iam_service_account}"]
+    role    = "roles/pubsub.publisher"
+  }
+
+  binding {
+    members = ["serviceAccount:${var.iam_service_account}"]
+    role    = "roles/pubsub.viewer"
+  }
+}
+
+resource "google_pubsub_topic_iam_policy" "topic_policy" {
+  count = "${var.iam_service_account == "" ? 0 : 1}"
+
+  policy_data = "${data.google_iam_policy.topic_policy.policy_data}"
+  topic       = "${google_pubsub_topic.topic.name}"
+}
+
 resource "google_pubsub_subscription" "subscription" {
   name  = "taskhawk-${var.queue}"
   topic = "${google_pubsub_topic.topic.name}"
@@ -19,10 +38,48 @@ resource "google_pubsub_subscription" "subscription" {
   }
 }
 
+data "google_iam_policy" "subscription_policy" {
+  binding {
+    members = ["serviceAccount:${var.iam_service_account}"]
+    role    = "roles/pubsub.subscriber"
+  }
+
+  binding {
+    members = ["serviceAccount:${var.iam_service_account}"]
+    role    = "roles/pubsub.viewer"
+  }
+}
+
+resource "google_pubsub_topic_iam_policy" "subscription_policy" {
+  count = "${var.iam_service_account == "" ? 0 : 1}"
+
+  policy_data = "${data.google_iam_policy.subscription_policy.policy_data}"
+  topic       = "${google_pubsub_subscription.subscription.name}"
+}
+
 resource "google_pubsub_topic" "dlq_topic" {
   name = "taskhawk-${var.queue}-dlq"
 
   labels = "${var.labels}"
+}
+
+data "google_iam_policy" "dlq_topic_policy" {
+  binding {
+    members = ["serviceAccount:${var.iam_service_account}"]
+    role    = "roles/pubsub.publisher"
+  }
+
+  binding {
+    members = ["serviceAccount:${var.iam_service_account}"]
+    role    = "roles/pubsub.viewer"
+  }
+}
+
+resource "google_pubsub_topic_iam_policy" "dlq_topic_policy" {
+  count = "${var.iam_service_account == "" ? 0 : 1}"
+
+  policy_data = "${data.google_iam_policy.dlq_topic_policy.policy_data}"
+  topic       = "${google_pubsub_topic.dlq_topic.name}"
 }
 
 resource "google_pubsub_subscription" "dlq_subscription" {
@@ -36,6 +93,25 @@ resource "google_pubsub_subscription" "dlq_subscription" {
   expiration_policy {
     ttl = ""
   }
+}
+
+data "google_iam_policy" "dlq_subscription_policy" {
+  binding {
+    members = ["serviceAccount:${var.iam_service_account}"]
+    role    = "roles/pubsub.subscriber"
+  }
+
+  binding {
+    members = ["serviceAccount:${var.iam_service_account}"]
+    role    = "roles/pubsub.viewer"
+  }
+}
+
+resource "google_pubsub_topic_iam_policy" "dlq_subscription_policy" {
+  count = "${var.iam_service_account == "" ? 0 : 1}"
+
+  policy_data = "${data.google_iam_policy.dlq_subscription_policy.policy_data}"
+  topic       = "${google_pubsub_subscription.dlq_subscription.name}"
 }
 
 resource "google_monitoring_alert_policy" "high_message_alert" {
@@ -52,7 +128,7 @@ resource "google_monitoring_alert_policy" "high_message_alert" {
     condition_threshold {
       threshold_value = "${var.queue_alarm_high_message_count_threshold}" // Number of messages
       comparison      = "COMPARISON_GT"
-      duration        = "300s"                                            // Seconds
+      duration        = "300s" // Seconds
 
       filter = "metric.type=\"pubsub.googleapis.com/subscription/num_undelivered_messages\" resource.type=\"pubsub_subscription\" resource.label.\"subscription_id\"=\"${google_pubsub_subscription.subscription.name}\"${local.filter_suffix}"
 
@@ -82,9 +158,9 @@ resource "google_monitoring_alert_policy" "dlq_alert" {
     display_name = "${title(var.queue)} Taskhawk DLQ is non-empty${local.title_suffix}"
 
     condition_threshold {
-      threshold_value = "1"             // Number of messages
+      threshold_value = "1" // Number of messages
       comparison      = "COMPARISON_GT"
-      duration        = "60s"           // Seconds
+      duration        = "60s" // Seconds
 
       filter = "metric.type=\"pubsub.googleapis.com/subscription/num_undelivered_messages\" resource.type=\"pubsub_subscription\" resource.label.\"subscription_id\"=\"${google_pubsub_subscription.dlq_subscription.name}\"${local.filter_suffix}"
 

@@ -83,3 +83,8 @@ variable "alerting_project" {
   description = "The project where alerting resources should be created (defaults to current project)"
   default     = ""
 }
+
+variable "iam_service_account" {
+  description = "The IAM service account to create exclusive IAM permissions for the topics and subscriptions"
+  default     = ""
+}

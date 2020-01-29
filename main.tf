@@ -3,8 +3,9 @@ module "queue_default" {
 
   queue = "${var.queue}"
 
-  alerting = "${var.alerting}"
-  labels   = "${var.labels}"
+  alerting            = "${var.alerting}"
+  labels              = "${var.labels}"
+  iam_service_account = "${var.iam_service_account}"
 
   alerting_project                               = "${var.alerting_project}"
   queue_alarm_high_message_count_threshold       = "${var.queue_alarm_high_message_count_threshold}"
@@ -25,8 +26,9 @@ module "queue_high_priority" {
 
   queue = "${var.queue}-high-priority"
 
-  alerting = "${var.alerting}"
-  labels   = "${var.labels}"
+  alerting            = "${var.alerting}"
+  labels              = "${var.labels}"
+  iam_service_account = "${var.iam_service_account}"
 
   alerting_project                               = "${var.alerting_project}"
   queue_alarm_high_message_count_threshold       = "${var.queue_alarm_high_priority_high_message_count_threshold}"
@@ -47,8 +49,9 @@ module "queue_low_priority" {
 
   queue = "${var.queue}-low-priority"
 
-  alerting = "${var.alerting}"
-  labels   = "${var.labels}"
+  alerting            = "${var.alerting}"
+  labels              = "${var.labels}"
+  iam_service_account = "${var.iam_service_account}"
 
   alerting_project                               = "${var.alerting_project}"
   queue_alarm_high_message_count_threshold       = "${var.queue_alarm_low_priority_high_message_count_threshold}"
@@ -69,8 +72,9 @@ module "queue_bulk" {
 
   queue = "${var.queue}-bulk"
 
-  alerting = "${var.alerting}"
-  labels   = "${var.labels}"
+  alerting            = "${var.alerting}"
+  labels              = "${var.labels}"
+  iam_service_account = "${var.iam_service_account}"
 
   alerting_project                               = "${var.alerting_project}"
   queue_alarm_high_message_count_threshold       = "${var.queue_alarm_bulk_high_message_count_threshold}"
