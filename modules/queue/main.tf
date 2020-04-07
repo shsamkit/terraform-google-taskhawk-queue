@@ -36,6 +36,12 @@ resource "google_pubsub_subscription" "subscription" {
   expiration_policy {
     ttl = ""
   }
+
+
+  dead_letter_policy {
+    dead_letter_topic     = "${google_pubsub_topic.dlq_topic.id}"
+    max_delivery_attempts = 5
+  }
 }
 
 data "google_iam_policy" "subscription_policy" {
