@@ -121,7 +121,7 @@ resource "google_pubsub_subscription_iam_policy" "dlq_subscription_policy" {
 }
 
 resource "google_monitoring_alert_policy" "high_message_alert" {
-  count = var.alerting == "true" ? 1 : 0
+  count = var.enable_alerts ? 1 : 0
 
   project = var.alerting_project
 
@@ -153,7 +153,7 @@ resource "google_monitoring_alert_policy" "high_message_alert" {
 }
 
 resource "google_monitoring_alert_policy" "dlq_alert" {
-  count = var.alerting == "true" ? 1 : 0
+  count = var.enable_alerts ? 1 : 0
 
   project = var.alerting_project
 
@@ -207,4 +207,37 @@ resource "google_dataflow_job" "firehose" {
     outputDirectory      = var.dataflow_output_directory
     outputFilenamePrefix = var.dataflow_output_filename_prefix == "" ? format("%s-", google_pubsub_topic.topic.name) : var.dataflow_output_filename_prefix
   }
+}
+
+resource "google_monitoring_alert_policy" "dataflow_freshness" {
+  count = var.enable_firehose_all_messages && var.enable_alerts ? 1 : 0
+
+  project = var.alerting_project
+
+  display_name = "${title(var.queue)} Taskhawk Dataflow data freshness too high${local.title_suffix}"
+  combiner     = "OR"
+
+  conditions {
+    display_name = "Dataflow data freshness for ${google_dataflow_job.firehose[0].name}${local.title_suffix}"
+
+    condition_threshold {
+      threshold_value = var.dataflow_freshness_alert_threshold // Freshness is seconds
+      comparison      = "COMPARISON_GT"
+      duration        = "60s" // Seconds
+
+      filter = "metric.type=\"dataflow.googleapis.com/job/data_watermark_age\" resource.type=\"dataflow_job\" resource.label.\"job_name\"=\"${google_dataflow_job.firehose[0].name}\"${local.dataflow_filter_suffix}"
+
+      aggregations {
+        alignment_period     = "60s"
+        per_series_aligner   = "ALIGN_MAX"
+        cross_series_reducer = "REDUCE_MAX"
+      }
+
+      trigger {
+        count = 1
+      }
+    }
+  }
+
+  notification_channels = var.dataflow_freshness_alert_notification_channels
 }

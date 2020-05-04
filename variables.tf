@@ -7,9 +7,10 @@ variable "labels" {
   type        = map(string)
 }
 
-variable "alerting" {
+variable "enable_alerts" {
   description = "Should Stackdriver alerts be generated?"
-  default     = "false"
+  type        = bool
+  default     = false
 }
 
 variable "enable_firehose_all_messages" {
@@ -87,4 +88,15 @@ variable "alerting_project" {
 variable "iam_service_account" {
   description = "The IAM service account to create exclusive IAM permissions for the topics and subscriptions"
   default     = ""
+}
+
+variable "dataflow_freshness_alert_threshold" {
+  description = "Threshold for alerting on Dataflow freshness in seconds"
+  default     = 1800 # 30 mins
+}
+
+variable "dataflow_freshness_alert_notification_channels" {
+  description = "Stackdriver Notification Channels for dataflow alarm for freshness (required if alerting is on)"
+  type        = list(string)
+  default     = []
 }
