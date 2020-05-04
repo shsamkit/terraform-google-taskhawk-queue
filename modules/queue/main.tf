@@ -214,11 +214,11 @@ resource "google_monitoring_alert_policy" "dataflow_freshness" {
 
   project = var.alerting_project
 
-  display_name = "${title(var.queue)} Taskhawk Dataflow data freshness too high${local.title_suffix}"
+  display_name = "${title(var.queue)} Taskhawk Dataflow data freshness too stale${local.title_suffix}"
   combiner     = "OR"
 
   conditions {
-    display_name = "Dataflow data freshness for ${google_dataflow_job.firehose[0].name}${local.title_suffix}"
+    display_name = "Dataflow data age for ${google_dataflow_job.firehose[0].name}${local.title_suffix}"
 
     condition_threshold {
       threshold_value = var.dataflow_freshness_alert_threshold // Freshness is seconds
