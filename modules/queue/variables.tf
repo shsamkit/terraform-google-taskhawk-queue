@@ -4,7 +4,7 @@ variable "queue" {
 
 variable "labels" {
   description = "Labels to attach to the PubSub topic and subscription"
-  type        = "map"
+  type        = map(string)
 }
 
 variable "alerting" {
@@ -51,12 +51,12 @@ variable "queue_alarm_high_message_count_threshold" {
 
 variable "queue_high_message_count_notification_channels" {
   description = "Stackdriver Notification Channels for main queue alarm for high message count (required if alerting is on)"
-  type        = "list"
+  type        = list(string)
 }
 
 variable "dlq_high_message_count_notification_channels" {
   description = "Stackdriver Notification Channels for DLQ alarm for high message count (required if alerting is on)"
-  type        = "list"
+  type        = list(string)
 }
 
 variable "alerting_project" {
@@ -68,3 +68,4 @@ variable "iam_service_account" {
   description = "The IAM service account to create exclusive IAM permissions for this topic and subscription"
   default     = ""
 }
+

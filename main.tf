@@ -1,24 +1,24 @@
 module "queue_default" {
   source = "./modules/queue"
 
-  queue = "${var.queue}"
+  queue = var.queue
 
-  alerting            = "${var.alerting}"
-  labels              = "${var.labels}"
-  iam_service_account = "${var.iam_service_account}"
+  alerting            = var.alerting
+  labels              = var.labels
+  iam_service_account = var.iam_service_account
 
-  alerting_project                               = "${var.alerting_project}"
-  queue_alarm_high_message_count_threshold       = "${var.queue_alarm_high_message_count_threshold}"
-  queue_high_message_count_notification_channels = "${var.queue_high_message_count_notification_channels}"
-  dlq_high_message_count_notification_channels   = "${var.dlq_high_message_count_notification_channels}"
+  alerting_project                               = var.alerting_project
+  queue_alarm_high_message_count_threshold       = var.queue_alarm_high_message_count_threshold
+  queue_high_message_count_notification_channels = var.queue_high_message_count_notification_channels
+  dlq_high_message_count_notification_channels   = var.dlq_high_message_count_notification_channels
 
-  enable_firehose_all_messages    = "${var.enable_firehose_all_messages}"
-  dataflow_tmp_gcs_location       = "${var.dataflow_tmp_gcs_location}"
-  dataflow_template_gcs_path      = "${var.dataflow_template_gcs_path}"
-  dataflow_zone                   = "${var.dataflow_zone}"
-  dataflow_region                 = "${var.dataflow_region}"
-  dataflow_output_directory       = "${var.dataflow_output_directory}"
-  dataflow_output_filename_prefix = "${var.dataflow_output_filename_prefix}"
+  enable_firehose_all_messages    = var.enable_firehose_all_messages
+  dataflow_tmp_gcs_location       = var.dataflow_tmp_gcs_location
+  dataflow_template_gcs_path      = var.dataflow_template_gcs_path
+  dataflow_zone                   = var.dataflow_zone
+  dataflow_region                 = var.dataflow_region
+  dataflow_output_directory       = var.dataflow_output_directory
+  dataflow_output_filename_prefix = var.dataflow_output_filename_prefix
 }
 
 module "queue_high_priority" {
@@ -26,22 +26,22 @@ module "queue_high_priority" {
 
   queue = "${var.queue}-high-priority"
 
-  alerting            = "${var.alerting}"
-  labels              = "${var.labels}"
-  iam_service_account = "${var.iam_service_account}"
+  alerting            = var.alerting
+  labels              = var.labels
+  iam_service_account = var.iam_service_account
 
-  alerting_project                               = "${var.alerting_project}"
-  queue_alarm_high_message_count_threshold       = "${var.queue_alarm_high_priority_high_message_count_threshold}"
-  queue_high_message_count_notification_channels = "${var.queue_high_message_count_notification_channels}"
-  dlq_high_message_count_notification_channels   = "${var.dlq_high_message_count_notification_channels}"
+  alerting_project                               = var.alerting_project
+  queue_alarm_high_message_count_threshold       = var.queue_alarm_high_priority_high_message_count_threshold
+  queue_high_message_count_notification_channels = var.queue_high_message_count_notification_channels
+  dlq_high_message_count_notification_channels   = var.dlq_high_message_count_notification_channels
 
-  enable_firehose_all_messages    = "${var.enable_firehose_all_messages}"
-  dataflow_tmp_gcs_location       = "${var.dataflow_tmp_gcs_location}"
-  dataflow_template_gcs_path      = "${var.dataflow_template_gcs_path}"
-  dataflow_zone                   = "${var.dataflow_zone}"
-  dataflow_region                 = "${var.dataflow_region}"
-  dataflow_output_directory       = "${var.dataflow_output_directory}"
-  dataflow_output_filename_prefix = "${var.dataflow_output_filename_prefix}"
+  enable_firehose_all_messages    = var.enable_firehose_all_messages
+  dataflow_tmp_gcs_location       = var.dataflow_tmp_gcs_location
+  dataflow_template_gcs_path      = var.dataflow_template_gcs_path
+  dataflow_zone                   = var.dataflow_zone
+  dataflow_region                 = var.dataflow_region
+  dataflow_output_directory       = var.dataflow_output_directory
+  dataflow_output_filename_prefix = var.dataflow_output_filename_prefix
 }
 
 module "queue_low_priority" {
@@ -49,22 +49,22 @@ module "queue_low_priority" {
 
   queue = "${var.queue}-low-priority"
 
-  alerting            = "${var.alerting}"
-  labels              = "${var.labels}"
-  iam_service_account = "${var.iam_service_account}"
+  alerting            = var.alerting
+  labels              = var.labels
+  iam_service_account = var.iam_service_account
 
-  alerting_project                               = "${var.alerting_project}"
-  queue_alarm_high_message_count_threshold       = "${var.queue_alarm_low_priority_high_message_count_threshold}"
-  queue_high_message_count_notification_channels = "${var.queue_high_message_count_notification_channels}"
-  dlq_high_message_count_notification_channels   = "${var.dlq_high_message_count_notification_channels}"
+  alerting_project                               = var.alerting_project
+  queue_alarm_high_message_count_threshold       = var.queue_alarm_low_priority_high_message_count_threshold
+  queue_high_message_count_notification_channels = var.queue_high_message_count_notification_channels
+  dlq_high_message_count_notification_channels   = var.dlq_high_message_count_notification_channels
 
-  enable_firehose_all_messages    = "${var.enable_firehose_all_messages}"
-  dataflow_tmp_gcs_location       = "${var.dataflow_tmp_gcs_location}"
-  dataflow_template_gcs_path      = "${var.dataflow_template_gcs_path}"
-  dataflow_zone                   = "${var.dataflow_zone}"
-  dataflow_region                 = "${var.dataflow_region}"
-  dataflow_output_directory       = "${var.dataflow_output_directory}"
-  dataflow_output_filename_prefix = "${var.dataflow_output_filename_prefix}"
+  enable_firehose_all_messages    = var.enable_firehose_all_messages
+  dataflow_tmp_gcs_location       = var.dataflow_tmp_gcs_location
+  dataflow_template_gcs_path      = var.dataflow_template_gcs_path
+  dataflow_zone                   = var.dataflow_zone
+  dataflow_region                 = var.dataflow_region
+  dataflow_output_directory       = var.dataflow_output_directory
+  dataflow_output_filename_prefix = var.dataflow_output_filename_prefix
 }
 
 module "queue_bulk" {
@@ -72,20 +72,20 @@ module "queue_bulk" {
 
   queue = "${var.queue}-bulk"
 
-  alerting            = "${var.alerting}"
-  labels              = "${var.labels}"
-  iam_service_account = "${var.iam_service_account}"
+  alerting            = var.alerting
+  labels              = var.labels
+  iam_service_account = var.iam_service_account
 
-  alerting_project                               = "${var.alerting_project}"
-  queue_alarm_high_message_count_threshold       = "${var.queue_alarm_bulk_high_message_count_threshold}"
-  queue_high_message_count_notification_channels = "${var.queue_high_message_count_notification_channels}"
-  dlq_high_message_count_notification_channels   = "${var.dlq_high_message_count_notification_channels}"
+  alerting_project                               = var.alerting_project
+  queue_alarm_high_message_count_threshold       = var.queue_alarm_bulk_high_message_count_threshold
+  queue_high_message_count_notification_channels = var.queue_high_message_count_notification_channels
+  dlq_high_message_count_notification_channels   = var.dlq_high_message_count_notification_channels
 
-  enable_firehose_all_messages    = "${var.enable_firehose_all_messages}"
-  dataflow_tmp_gcs_location       = "${var.dataflow_tmp_gcs_location}"
-  dataflow_template_gcs_path      = "${var.dataflow_template_gcs_path}"
-  dataflow_zone                   = "${var.dataflow_zone}"
-  dataflow_region                 = "${var.dataflow_region}"
-  dataflow_output_directory       = "${var.dataflow_output_directory}"
-  dataflow_output_filename_prefix = "${var.dataflow_output_filename_prefix}"
+  enable_firehose_all_messages    = var.enable_firehose_all_messages
+  dataflow_tmp_gcs_location       = var.dataflow_tmp_gcs_location
+  dataflow_template_gcs_path      = var.dataflow_template_gcs_path
+  dataflow_zone                   = var.dataflow_zone
+  dataflow_region                 = var.dataflow_region
+  dataflow_output_directory       = var.dataflow_output_directory
+  dataflow_output_filename_prefix = var.dataflow_output_filename_prefix
 }
