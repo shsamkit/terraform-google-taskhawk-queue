@@ -13,7 +13,8 @@ Usage
 module "taskhawk-dev-myapp" {
   source   = "standard-ai/taskhawk-queue/google"
   queue    = "dev-myapp"
-  alerting = true
+
+  enable_alerts = true
 
   labels = {
     app     = "myapp"
