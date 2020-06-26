@@ -3,6 +3,11 @@ output "topic_name" {
   description = "Consumer topic name"
 }
 
+output "topic_id" {
+  value       = google_pubsub_topic.topic.id
+  description = "Consumer topic id"
+}
+
 output "subscription_name" {
   value       = google_pubsub_subscription.subscription.name
   description = "Consumer subscription name"

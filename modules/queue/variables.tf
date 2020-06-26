@@ -66,9 +66,9 @@ variable "alerting_project" {
   default     = ""
 }
 
-variable "iam_service_account" {
-  description = "The IAM service account to create exclusive IAM permissions for this topic and subscription"
-  default     = ""
+variable "iam_service_accounts" {
+  description = "The IAM service accounts to create exclusive IAM permissions for this topic and subscription"
+  default     = []
 }
 
 variable "dataflow_freshness_alert_threshold" {

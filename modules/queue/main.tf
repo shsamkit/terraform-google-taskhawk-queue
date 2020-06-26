@@ -8,19 +8,27 @@ resource "google_pubsub_topic" "topic" {
 }
 
 data "google_iam_policy" "topic_policy" {
-  binding {
-    members = ["serviceAccount:${var.iam_service_account}"]
-    role    = "roles/pubsub.publisher"
+  dynamic "binding" {
+    for_each = var.iam_service_accounts
+
+    content {
+      members = ["serviceAccount:${binding.value}"]
+      role    = "roles/pubsub.publisher"
+    }
   }
 
-  binding {
-    members = ["serviceAccount:${var.iam_service_account}"]
-    role    = "roles/pubsub.viewer"
+  dynamic "binding" {
+    for_each = var.iam_service_accounts
+
+    content {
+      members = ["serviceAccount:${binding.value}"]
+      role    = "roles/pubsub.viewer"
+    }
   }
 }
 
 resource "google_pubsub_topic_iam_policy" "topic_policy" {
-  count = var.iam_service_account == "" ? 0 : 1
+  count = length(var.iam_service_accounts) == 0 ? 0 : 1
 
   policy_data = data.google_iam_policy.topic_policy.policy_data
   topic       = google_pubsub_topic.topic.name
@@ -45,9 +53,26 @@ resource "google_pubsub_subscription" "subscription" {
 }
 
 data "google_iam_policy" "subscription_policy" {
+  dynamic "binding" {
+    for_each = var.iam_service_accounts
+
+    content {
+      members = ["serviceAccount:${binding.value}"]
+      role    = "roles/pubsub.subscriber"
+    }
+  }
+
+  dynamic "binding" {
+    for_each = var.iam_service_accounts
+
+    content {
+      members = ["serviceAccount:${binding.value}"]
+      role    = "roles/pubsub.viewer"
+    }
+  }
+
   binding {
     members = [
-      "serviceAccount:${var.iam_service_account}",
       "serviceAccount:service-${data.google_project.current.number}@gcp-sa-pubsub.iam.gserviceaccount.com"
     ]
     role = "roles/pubsub.subscriber"
@@ -55,7 +80,6 @@ data "google_iam_policy" "subscription_policy" {
 
   binding {
     members = [
-      "serviceAccount:${var.iam_service_account}",
       "serviceAccount:service-${data.google_project.current.number}@gcp-sa-pubsub.iam.gserviceaccount.com"
     ]
     role = "roles/pubsub.viewer"
@@ -63,7 +87,7 @@ data "google_iam_policy" "subscription_policy" {
 }
 
 resource "google_pubsub_subscription_iam_policy" "subscription_policy" {
-  count = var.iam_service_account == "" ? 0 : 1
+  count = length(var.iam_service_accounts) == 0 ? 0 : 1
 
   policy_data  = data.google_iam_policy.subscription_policy.policy_data
   subscription = google_pubsub_subscription.subscription.name
@@ -76,9 +100,26 @@ resource "google_pubsub_topic" "dlq_topic" {
 }
 
 data "google_iam_policy" "dlq_topic_policy" {
+  dynamic "binding" {
+    for_each = var.iam_service_accounts
+
+    content {
+      members = ["serviceAccount:${binding.value}"]
+      role    = "roles/pubsub.publisher"
+    }
+  }
+
+  dynamic "binding" {
+    for_each = var.iam_service_accounts
+
+    content {
+      members = ["serviceAccount:${binding.value}"]
+      role    = "roles/pubsub.viewer"
+    }
+  }
+
   binding {
     members = [
-      "serviceAccount:${var.iam_service_account}",
       "serviceAccount:service-${data.google_project.current.number}@gcp-sa-pubsub.iam.gserviceaccount.com"
     ]
     role = "roles/pubsub.publisher"
@@ -86,7 +127,6 @@ data "google_iam_policy" "dlq_topic_policy" {
 
   binding {
     members = [
-      "serviceAccount:${var.iam_service_account}",
       "serviceAccount:service-${data.google_project.current.number}@gcp-sa-pubsub.iam.gserviceaccount.com"
     ]
     role = "roles/pubsub.viewer"
@@ -94,7 +134,7 @@ data "google_iam_policy" "dlq_topic_policy" {
 }
 
 resource "google_pubsub_topic_iam_policy" "dlq_topic_policy" {
-  count = var.iam_service_account == "" ? 0 : 1
+  count = length(var.iam_service_accounts) == 0 ? 0 : 1
 
   policy_data = data.google_iam_policy.dlq_topic_policy.policy_data
   topic       = google_pubsub_topic.dlq_topic.name
@@ -114,19 +154,27 @@ resource "google_pubsub_subscription" "dlq_subscription" {
 }
 
 data "google_iam_policy" "dlq_subscription_policy" {
-  binding {
-    members = ["serviceAccount:${var.iam_service_account}"]
-    role    = "roles/pubsub.subscriber"
+  dynamic "binding" {
+    for_each = var.iam_service_accounts
+
+    content {
+      members = ["serviceAccount:${binding.value}"]
+      role    = "roles/pubsub.subscriber"
+    }
   }
 
-  binding {
-    members = ["serviceAccount:${var.iam_service_account}"]
-    role    = "roles/pubsub.viewer"
+  dynamic "binding" {
+    for_each = var.iam_service_accounts
+
+    content {
+      members = ["serviceAccount:${binding.value}"]
+      role    = "roles/pubsub.viewer"
+    }
   }
 }
 
 resource "google_pubsub_subscription_iam_policy" "dlq_subscription_policy" {
-  count = var.iam_service_account == "" ? 0 : 1
+  count = length(var.iam_service_accounts) == 0 ? 0 : 1
 
   policy_data  = data.google_iam_policy.dlq_subscription_policy.policy_data
   subscription = google_pubsub_subscription.dlq_subscription.name

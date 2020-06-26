@@ -3,6 +3,11 @@ output "default_topic_name" {
   description = "Pubsub topic name for the default queue"
 }
 
+output "default_topic_id" {
+  value       = module.queue_default.topic_id
+  description = "Pubsub topic id for the default queue"
+}
+
 output "default_subscription_name" {
   value       = module.queue_default.subscription_name
   description = "Pubsub subscription name for the default queue"
